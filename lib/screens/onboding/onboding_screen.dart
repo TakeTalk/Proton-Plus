@@ -68,13 +68,13 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
                   children: [
                     const Spacer(),
                     SizedBox(
-                      width: 260,
+                      width: 320,
                       child: Column(
                         children: const [
                           Text(
-                            "Learn design & code",
+                            "Hello 👋 Your Medical Assistance just a chat away!!",
                             style: TextStyle(
-                              fontSize: 60,
+                              fontSize: 40,
                               fontWeight: FontWeight.w700,
                               fontFamily: "Poppins",
                               height: 1.2,

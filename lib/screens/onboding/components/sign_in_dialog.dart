@@ -34,15 +34,14 @@ void showCustomDialog(BuildContext context, {required ValueChanged onValue}) {
           ),
           child: Scaffold(
             backgroundColor: Colors.transparent,
-            body: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Column(
+            resizeToAvoidBottomInset: false,
+            body: SingleChildScrollView(
+            child: Column(
                   children: [
                     const Text(
                       "Sign in",
                       style: TextStyle(
-                        fontSize: 34,
+                        fontSize: 24,
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w600,
                       ),
@@ -114,22 +113,10 @@ void showCustomDialog(BuildContext context, {required ValueChanged onValue}) {
                     ),
                   ],
                 ),
-                const Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: -48,
-                  child: CircleAvatar(
-                    radius: 16,
-                    backgroundColor: Colors.white,
-                    child: Icon(
-                      Icons.close,
-                      size: 20,
-                      color: Colors.black,
-                    ),
-                  ),
-                )
-              ],
-            ),
+
+
+
+          ),
           ),
         ),
       );
