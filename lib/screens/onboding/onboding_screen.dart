@@ -1,10 +1,16 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
+import 'package:rive_animation/loginn.dart';
+import 'package:rive_animation/screens/entryPoint/entry_point.dart';
 
+import '../../firebase_options.dart';
 import 'components/animated_btn.dart';
 import 'components/sign_in_dialog.dart';
+
 
 class OnbodingScreen extends StatefulWidget {
   const OnbodingScreen({super.key});
@@ -14,6 +20,7 @@ class OnbodingScreen extends StatefulWidget {
 }
 
 class _OnbodingScreenState extends State<OnbodingScreen> {
+
   late RiveAnimationController _btnAnimationController;
 
   bool isShowSignInDialog = false;
@@ -95,18 +102,29 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
 
                         Future.delayed(
                           const Duration(milliseconds: 800),
-                          () {
-                            setState(() {
-                              isShowSignInDialog = true;
-                            });
-                            showCustomDialog(
-                              context,
-                              onValue: (_) {
-                                setState(() {
-                                  isShowSignInDialog = false;
-                                });
-                              },
-                            );
+                          () async {
+                              await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+                            if(FirebaseAuth.instance.currentUser != null){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const EntryPoint(),
+                                ),
+                              );
+                            }
+                            else{
+                              setState(() {
+                                isShowSignInDialog = true;
+                              });
+                              showCustomDialog(
+                                context,
+                                onValue: (_) {
+                                  setState(() {
+                                    isShowSignInDialog = false;
+                                  });
+                                },
+                              );
+                            }
                           },
                         );
                       },

@@ -5,6 +5,7 @@ import 'package:rive/rive.dart';
 import 'package:rive_animation/constants.dart';
 import 'package:rive_animation/screens/home/home_screen.dart';
 import 'package:rive_animation/utils/rive_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model/menu.dart';
 import 'components/btm_nav_item.dart';
@@ -13,6 +14,14 @@ import 'components/side_bar.dart';
 
 class EntryPoint extends StatefulWidget {
   const EntryPoint({super.key});
+  // _nameRetriever() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   final name = prefs.getString('name') ?? '';
+  //   final school = prefs.getString('email') ?? '';
+  //
+  //   print(name);
+  //   print(school);
+  // }
 
   @override
   State<EntryPoint> createState() => _EntryPointState();

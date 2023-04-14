@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rive_animation/auth_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../model/menu.dart';
 import '../../../utils/rive_utils.dart';
@@ -12,10 +14,31 @@ class SideBar extends StatefulWidget {
   State<SideBar> createState() => _SideBarState();
 }
 
+
 class _SideBarState extends State<SideBar> {
+
+  // Future saved() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   name = prefs.getString('name')!;// perform long operation
+  //
+  // }
+  // Obtain shared preferences.
   Menu selectedSideMenu = sidebarMenus.first;
   @override
   Widget build(BuildContext context) {
+    // Future<String> name = "hi" as Future<String>;
+    // name =  AuthService().googl();
+    // Future saved() async {
+    //   final prefs = await SharedPreferences.getInstance();
+    //   name = prefs.getString('name')!;// perform long operation
+    //   // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //   //   content: Text(name),
+    //   // ));
+    // }
+    // saved();
+    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //   content: Text(name),
+    // ));
     return SafeArea(
       child: Container(
         width: 288,
@@ -31,8 +54,8 @@ class _SideBarState extends State<SideBar> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const InfoCard(
-                name: "Abu Anwar",
+              InfoCard(
+                name: "name.toString()",
                 bio: "YouTuber",
               ),
               Padding(

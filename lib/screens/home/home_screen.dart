@@ -1,4 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:rive_animation/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model/course.dart';
 import 'components/course_card.dart';
@@ -27,6 +32,13 @@ class HomePage extends StatelessWidget {
               ),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
+                  child: GestureDetector(
+                    onTap: (){
+                      see(context);
+                    },
+                    onDoubleTap: (){
+                      logout(context);
+                    },
                 child: Row(
                   children: courses
                       .map(
@@ -41,6 +53,7 @@ class HomePage extends StatelessWidget {
                       )
                       .toList(),
                 ),
+                  ),
               ),
               Padding(
                 padding: const EdgeInsets.all(20),
@@ -67,4 +80,36 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
+  void see(BuildContext context) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final name = prefs.getString('name') ?? '';
+    final school = prefs.getString('email') ?? '';
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(name + " " + school),
+    ));
+  }
+
+    Future<void> logout(BuildContext context) async {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove("name");
+      await prefs.remove("email");
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("logging out"),
+      ));
+      await GoogleSignIn().disconnect();
+      FirebaseAuth.instance.signOut();
+      if (Navigator.canPop(context)) {
+        Navigator.pop(context);
+      } else {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MyApp()
+            ),
+        );
+        SystemNavigator.pop();
+      }
+    }
 }

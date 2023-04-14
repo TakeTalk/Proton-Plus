@@ -1,9 +1,69 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:rive_animation/auth_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../firebase_options.dart';
+import '../../entryPoint/entry_point.dart';
+import '../onboding_screen.dart';
 import 'sign_in_form.dart';
 
+
 void showCustomDialog(BuildContext context, {required ValueChanged onValue}) {
+  googleLogin() async {
+    print("googleLogin method Called");
+    GoogleSignIn _googleSignIn = GoogleSignIn();
+    try {
+      var reslut = await _googleSignIn.signIn();
+      if (reslut == null) {
+        return;
+      }
+
+      final userData = await reslut.authentication;
+      final credential = GoogleAuthProvider.credential(
+          accessToken: userData.accessToken, idToken: userData.idToken);
+      var finalResult =
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      print("Result $reslut");
+      print(reslut.displayName);
+      print(reslut.email);
+      print(reslut.photoUrl);
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute( t
+      //     builder: (context) => const EntryPoint(),
+      //   ),
+      // );
+      // Future.delayed(
+      //     const Duration(milliseconds: 500),
+      //         () async{
+      Navigator.of(context, rootNavigator: true).pop();
+      //           // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      //           //   content: Text("successfully signed in now you can chat"),
+      //           // ));
+      //         }
+      // );
+      // Obtain shared preferences.
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+// Save an integer value to 'counter' key.
+      await prefs.setString('name', reslut.displayName.toString());
+      await prefs.setString('email', reslut.email.toString());
+
+      if (Navigator.canPop(context)) {
+        Navigator.pop(context);
+      } else {
+        SystemNavigator.pop();
+      }
+
+    } catch (error) {
+      print(error);
+    }
+  }
   showGeneralDialog(
     context: context,
     barrierLabel: "Barrier",
@@ -101,7 +161,9 @@ void showCustomDialog(BuildContext context, {required ValueChanged onValue}) {
                           ),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () => {
+                          googleLogin(),
+                        },
                           padding: EdgeInsets.zero,
                           icon: SvgPicture.asset(
                             "assets/icons/google_box.svg",
