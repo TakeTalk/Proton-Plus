@@ -47,12 +47,13 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyC1f5eEuhan7uTN9q58DhCBUIpuYlDE9a4',
-    appId: '1:1067774015225:web:cd13ef942ef4b3ee965428',
-    messagingSenderId: '1067774015225',
-    projectId: 'sign-in-tutorial-c86bd',
-    authDomain: 'sign-in-tutorial-c86bd.firebaseapp.com',
-    storageBucket: 'sign-in-tutorial-c86bd.appspot.com',
+      apiKey: "AIzaSyDFLo7CvSssfV7RkpGGz6r7eONaed7hh0o",
+      authDomain: "virtusa-22e17.firebaseapp.com",
+      projectId: "virtusa-22e17",
+      storageBucket: "virtusa-22e17.appspot.com",
+      messagingSenderId: "434872887896",
+      appId: "1:434872887896:web:7a9db6f1355518355fb82d",
+      measurementId: "G-F51NFQ5L8R"
   );
 
   static const FirebaseOptions android = FirebaseOptions(

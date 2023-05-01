@@ -6,6 +6,8 @@ import 'package:rive_animation/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model/course.dart';
+import '../entryPoint/chat/ChatScreen.dart';
+import '../entryPoint/chat/chat.dart';
 import 'components/course_card.dart';
 import 'components/secondary_course_card.dart';
 
@@ -86,9 +88,15 @@ class HomePage extends StatelessWidget {
     final name = prefs.getString('name') ?? '';
     final school = prefs.getString('email') ?? '';
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(name + " " + school),
-    ));
+    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //   content: Text(name + " " + school),
+    // ));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChatScreen(),
+      ),
+    );
   }
 
     Future<void> logout(BuildContext context) async {

@@ -3,9 +3,12 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rive/rive.dart';
 import 'package:rive_animation/loginn.dart';
 import 'package:rive_animation/screens/entryPoint/entry_point.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../firebase_options.dart';
 import 'components/animated_btn.dart';
@@ -20,6 +23,47 @@ class OnbodingScreen extends StatefulWidget {
 }
 
 class _OnbodingScreenState extends State<OnbodingScreen> {
+
+  googleLogin() async {
+    print("googleLogin method Called");
+    GoogleSignIn _googleSignIn = GoogleSignIn();
+    try {
+      var reslut = await _googleSignIn.signIn();
+      if (reslut == null) {
+        print("googleLogin method Called1");
+        return;
+      }
+      print("googleLogin method Called2");
+      final userData = await reslut.authentication;
+      final credential = GoogleAuthProvider.credential(
+          accessToken: userData.accessToken, idToken: userData.idToken);
+      var finalResult =
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      print("Result $reslut");
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const EntryPoint(),
+        ),
+      );
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+// Save an integer value to 'counter' key.
+      await prefs.setString('name', reslut.displayName.toString());
+      await prefs.setString('email', reslut.email.toString());
+      await prefs.setString("pic", reslut.photoUrl.toString());
+
+      // if (Navigator.canPop(context)) {
+      //   Navigator.pop(context);
+      // } else {
+      //   SystemNavigator.pop();
+      // }
+
+    } catch (error) {
+      print("googleLogin method Called3");
+      print(error);
+    }
+  }
 
   late RiveAnimationController _btnAnimationController;
 
@@ -98,35 +142,7 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
                     AnimatedBtn(
                       btnAnimationController: _btnAnimationController,
                       press: () {
-                        _btnAnimationController.isActive = true;
-
-                        Future.delayed(
-                          const Duration(milliseconds: 800),
-                          () async {
-                              await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-                            if(FirebaseAuth.instance.currentUser != null){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const EntryPoint(),
-                                ),
-                              );
-                            }
-                            else{
-                              setState(() {
-                                isShowSignInDialog = true;
-                              });
-                              showCustomDialog(
-                                context,
-                                onValue: (_) {
-                                  setState(() {
-                                    isShowSignInDialog = false;
-                                  });
-                                },
-                              );
-                            }
-                          },
-                        );
+                        googleLogin();
                       },
                     ),
                     const Padding(
