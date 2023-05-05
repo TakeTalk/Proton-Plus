@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "434872887896",
+    "project_id": "virtusa-22e17",
+    "storage_bucket": "virtusa-22e17.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:434872887896:android:3cd1a00c256532835fb82d",
+        "android_client_info": {
+          "package_name": "com.example.rive_animation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "434872887896-mgivd3f69dmdsbsumdpuh99kuilq4qgt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuLbnvc_6NRo0_oFR5NFJHl609c8Z82Mc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "434872887896-480sahihu7drn56lvkgi61ntpls0pq2g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
