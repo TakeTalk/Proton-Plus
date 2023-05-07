@@ -18,6 +18,14 @@ class _ChatPage extends State<ChatPage>{
   List<types.Message> _messages = [];
   final _user = const types.User(id: '82091008-a484-4a89-ae75-a22bf8d6f3ac');
   final _bot = const types.User(id: 'proton-plus-bot');
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _getMessage();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
         // TODO: implement build
@@ -27,9 +35,36 @@ class _ChatPage extends State<ChatPage>{
   }
 
   void _addMessage(types.Message message) {
+    _updateMessage(message);
     setState(() {
       _messages.insert(0, message);
     });
+  }
+
+  Future<void> _getMessage() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final email = prefs.getString('email') ?? '';
+
+    var url = Uri.parse('http://43.204.171.36:8989/getChat/$email');
+
+    var response =await http.get(url,headers: { 'Content-type': 'application/json'});
+
+    if(response.statusCode==200){
+      _messages=jsonEncode(response.body) as List<types.Message>;
+    }
+
+  }
+
+  Future<void> _updateMessage(types.Message message) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final email = prefs.getString('email') ?? '';
+
+    var url = Uri.parse('http://43.204.171.36:8989/updateChat/$email');
+
+    var body = jsonEncode(message);
+
+    await http.put(url,body: body,headers: { 'Content-type': 'application/json'});
+
   }
 
   String formatMessage(String message){
