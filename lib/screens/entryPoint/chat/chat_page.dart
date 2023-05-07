@@ -20,6 +20,7 @@ class _ChatPage extends State<ChatPage>{
       body: Chat(messages: _messages, onSendPressed: _handleSendPressed, user: _user),
     );
   }
+  //t
 
   void _addMessage(types.Message message) {
     setState(() {
