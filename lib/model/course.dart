@@ -6,7 +6,7 @@ class Course {
 
   Course({
     required this.title,
-    this.description = 'Build and animate an iOS app from scratch',
+    this.description = '',
     this.iconSrc = "assets/icons/ios.svg",
     this.color = const Color(0xFF7553F6),
   });
@@ -14,26 +14,28 @@ class Course {
 
 final List<Course> courses = [
   Course(
-    title: "Animations in SwiftUI",
+    title: "Order Medicines by Prescription ",
+    description: "Upload your prescription and get your required medicines at your home seamlessly .."
   ),
   Course(
-    title: "Animations in Flutter",
+    title: "Book Appointment",
     iconSrc: "assets/icons/code.svg",
+    description: "Book Your Appointment to Appolo Hospital at 20% discount",
     color: const Color(0xFF80A4FF),
   ),
 ];
 
 final List<Course> recentCourses = [
-  Course(title: "State Machine"),
   Course(
-    title: "Animated Menu",
-    color: const Color(0xFF9CC5FF),
+    title: "New Chat",
     iconSrc: "assets/icons/code.svg",
   ),
-  Course(title: "Flutter with Rive"),
   Course(
-    title: "Animated Menu",
-    color: const Color(0xFF9CC5FF),
+      title: "Order Medicine",
+      color: const Color(0xFF9CC5FF),
+  ),
+  Course(
+    title: "Book Appointment",
     iconSrc: "assets/icons/code.svg",
   ),
 ];

@@ -4,21 +4,19 @@ import 'package:flutter/material.dart';
 class InfoCard extends StatelessWidget {
   const InfoCard({
     Key? key,
+    required this.pic,
     required this.name,
     required this.bio,
   }) : super(key: key);
 
-  final String name, bio;
+  final String name, bio , pic ;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const CircleAvatar(
+      leading: CircleAvatar(
+        backgroundImage:NetworkImage(pic),
         backgroundColor: Colors.white24,
-        child: Icon(
-          CupertinoIcons.person,
-          color: Colors.white,
-        ),
       ),
       title: Text(
         name,

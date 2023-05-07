@@ -5,11 +5,12 @@ class CourseCard extends StatelessWidget {
   const CourseCard({
     Key? key,
     required this.title,
+    required this.description,
     this.color = const Color(0xFF7553F6),
     this.iconSrc = "assets/icons/ios.svg",
   }) : super(key: key);
 
-  final String title, iconSrc;
+  final String title, iconSrc,description;
   final Color color;
 
   @override
@@ -38,18 +39,13 @@ class CourseCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 12, bottom: 8),
                     child: Text(
-                      "Build and animate an iOS app from scratch",
+                      description,
                       style: TextStyle(
                         color: Colors.white38,
                       ),
                     ),
                   ),
-                  Text(
-                    "61 SECTIONS - 11 HOURS",
-                    style: TextStyle(
-                      color: Colors.white38,
-                    ),
-                  ),
+
                   Spacer(),
                   Row(
                     children: List.generate(

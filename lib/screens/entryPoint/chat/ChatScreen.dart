@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,7 +14,42 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _textController = TextEditingController();
   List<String> _messages = [], _mymessages = [];
 
+   String formatMessage(String message){
+    var msgReply=jsonDecode(message);
+
+    msgReply=msgReply[0];
+
+    if(msgReply["greeting"]!=null){
+      return msgReply["greeting"];
+    }
+    if(msgReply["hospital suggestion"]!=null){
+      var suggestHospital=msgReply["hospital suggestion"];
+      String reply='Based on your location best hospitals are :\n\n\n';
+      int i=0;
+      for(var hospital in suggestHospital){
+        ++i;
+        var h1= "🏥 Hospital $i -> \n\n";
+        h1+="🧑‍⚕"+ hospital["name"] + "\n\n📌 Landmark : " + hospital['vicinity'] + "\n\n🗺️ Direction :"+  hospital["link"]+"\n\n\n";
+        reply+=h1;
+      }
+      return reply;
+
+    }
+    if(msgReply["appointment"]!=null){
+      return msgReply["appointment"];
+    }
+    if(msgReply["not found"]!=null){
+      return msgReply["not found"];
+    }
+
+
+
+    return "";
+  }
+
   Future<void> _sendMessage(String message) async {
+    _mymessages.insert(0, message);
+
     _textController.clear();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final email = prefs.getString('email') ?? '';
@@ -23,25 +59,19 @@ class _ChatScreenState extends State<ChatScreen> {
     // var body = jsonEncode({'sentence': message});
     var response = await http.get(url);
 
+    var msgReply=formatMessage(response.body);
 
-    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //   content: Text(response.body as String),
-    // ));
+
 
     if (response.statusCode == 200) {
       setState(() {
-        _messages.insert(0, response.body);
-        _mymessages.insert(0, message);
-        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        //   content: Text("name + " " + school2"),
-        // ));
+        _messages.insert(0, msgReply);
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("name + " " + school3"),
+        content: Text("error"),
       ));
       _messages.insert(0, 'Failed to send message');
-      print('Failed to send message');
     }
   }
 
