@@ -16,6 +16,7 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPage extends State<ChatPage>{
   List<types.Message> _messages = [];
+
   final _user = const types.User(id: '82091008-a484-4a89-ae75-a22bf8d6f3ac');
   final _bot = const types.User(id: 'proton-plus-bot');
 
@@ -42,6 +43,7 @@ class _ChatPage extends State<ChatPage>{
   }
 
   Future<void> _getMessage() async {
+    List<types.Message> reversedList=[];
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final email = prefs.getString('email') ?? '';
 
@@ -50,7 +52,24 @@ class _ChatPage extends State<ChatPage>{
     var response =await http.get(url,headers: { 'Content-type': 'application/json'});
 
     if(response.statusCode==200){
-      _messages=jsonEncode(response.body) as List<types.Message>;
+      var responseList=jsonDecode(response.body) ;
+      List<types.Message> tempMsgList = [];
+
+      for(var msg in responseList){
+        var user= types.User(id: msg['author']['id']);
+        var responseMsg = types.TextMessage(
+          author: user,
+          createdAt: msg['createdAt'],
+          id: msg['id'],
+          text: msg['text'],
+        );
+        tempMsgList.add(responseMsg);
+        reversedList = List.from(tempMsgList.reversed);
+      }
+      setState(() {
+        _messages=reversedList;
+      });
+
     }
 
   }
