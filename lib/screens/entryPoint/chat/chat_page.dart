@@ -33,6 +33,7 @@ class _ChatPage extends State<ChatPage>{
       body: Chat(messages: _messages, onSendPressed: _handleSendPressed, user: _user,theme: const DarkChatTheme()),
     );
   }
+  //t
 
   void _addMessage(types.Message message) {
     _updateMessage(message);
