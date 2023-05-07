@@ -39,19 +39,26 @@ List<Menu> sidebarMenus = [
 ];
 List<Menu> sidebarMenus2 = [
   Menu(
-    title: "History",
-    rive: RiveModel(
-        src: "assets/RiveAssets/icons.riv",
-        artboard: "TIMER",
-        stateMachineName: "TIMER_Interactivity"),
-  ),
-  Menu(
-    title: "Notifications",
+    title: "Logout",
     rive: RiveModel(
         src: "assets/RiveAssets/icons.riv",
         artboard: "BELL",
         stateMachineName: "BELL_Interactivity"),
   ),
+  // Menu(
+  //   title: "History",
+  //   rive: RiveModel(
+  //       src: "assets/RiveAssets/icons.riv",
+  //       artboard: "TIMER",
+  //       stateMachineName: "TIMER_Interactivity"),
+  // ),
+  // Menu(
+  //   title: "Notificatio",
+  //   rive: RiveModel(
+  //       src: "assets/RiveAssets/icons.riv",
+  //       artboard: "BELL",
+  //       stateMachineName: "BELL_Interactivity"),
+  // ),
 ];
 
 List<Menu> bottomNavItems = [

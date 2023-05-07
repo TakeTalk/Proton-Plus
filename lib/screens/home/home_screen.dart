@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rive_animation/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../go to get_lat_long_address.dart';
 import '../../model/course.dart';
 import '../entryPoint/chat/ChatScreen.dart';
 import '../entryPoint/chat/chat.dart';
@@ -13,7 +14,6 @@ import 'components/secondary_course_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

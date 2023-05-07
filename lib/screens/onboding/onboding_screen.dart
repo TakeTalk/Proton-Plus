@@ -23,7 +23,7 @@ import 'package:location/location.dart';
     'phone':"",
     'name':"",
     'photoUrl':"",
-    'rewardsPoint':0,
+    'rewardsPoints':0,
     'location_lat':"",
     'location_long':""
 
@@ -129,7 +129,7 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
 
       await prefs.setString('name', result.displayName.toString());
       await prefs.setString('email', result.email.toString());
-      await prefs.setString("pic", result.photoUrl.toString());
+      await prefs.setString('pic', result.photoUrl.toString());
 
       Navigator.push(
         context,
