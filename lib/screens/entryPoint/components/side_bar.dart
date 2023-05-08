@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:rive_animation/auth_service.dart';
+import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../main.dart';
 import '../../../model/menu.dart';
 import '../../../utils/rive_utils.dart';
 import 'info_card.dart';
@@ -12,33 +15,30 @@ class SideBar extends StatefulWidget {
 
   @override
   State<SideBar> createState() => _SideBarState();
+
 }
 
 
 class _SideBarState extends State<SideBar> {
 
-  // Future saved() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   name = prefs.getString('name')!;// perform long operation
-  //
-  // }
+  var name="";
+  var email="";
+  var pic = "";
+
+  @override
+  void initState() {
+    super.initState();
+    saved();
+  }
+
+
+
   // Obtain shared preferences.
   Menu selectedSideMenu = sidebarMenus.first;
+  Menu selectedSideMenu2 = sidebarMenus2.first;
   @override
   Widget build(BuildContext context) {
-    // Future<String> name = "hi" as Future<String>;
-    // name =  AuthService().googl();
-    // Future saved() async {
-    //   final prefs = await SharedPreferences.getInstance();
-    //   name = prefs.getString('name')!;// perform long operation
-    //   // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //   //   content: Text(name),
-    //   // ));
-    // }
-    // saved();
-    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //   content: Text(name),
-    // ));
+
     return SafeArea(
       child: Container(
         width: 288,
@@ -55,8 +55,9 @@ class _SideBarState extends State<SideBar> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InfoCard(
-                name: "name.toString()",
-                bio: "YouTuber",
+                pic: pic,
+                name: name,
+                bio: email,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 24, top: 32, bottom: 16),
@@ -97,11 +98,12 @@ class _SideBarState extends State<SideBar> {
               ...sidebarMenus2
                   .map((menu) => SideMenu(
                         menu: menu,
-                        selectedMenu: selectedSideMenu,
+                        selectedMenu: selectedSideMenu2,
                         press: () {
+                          logout(context);
                           RiveUtils.chnageSMIBoolState(menu.rive.status!);
                           setState(() {
-                            selectedSideMenu = menu;
+                            selectedSideMenu2 = menu;
                           });
                         },
                         riveOnInit: (artboard) {
@@ -116,4 +118,41 @@ class _SideBarState extends State<SideBar> {
       ),
     );
   }
+
+  Future<void> logout(BuildContext context) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove("name");
+    await prefs.remove("email");
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("logging out"),
+    ));
+    await GoogleSignIn().disconnect();
+    FirebaseAuth.instance.signOut();
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MyApp()
+        ),
+      );
+      SystemNavigator.pop();
+    }
+  }
+
+  void saved() async {
+
+    final prefs = await SharedPreferences.getInstance();
+
+    name = prefs.getString("name")!;
+    email = prefs.getString("email")!;
+    pic = prefs.getString("pic")!;
+
+    setState(() {
+
+    });
+
+  }
+
 }

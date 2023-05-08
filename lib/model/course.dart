@@ -1,39 +1,48 @@
 import 'package:flutter/material.dart' show Color;
 
 class Course {
-  final String title, description, iconSrc;
+  final String title, description, iconSrc,image;
   final Color color;
 
   Course({
     required this.title,
-    this.description = 'Build and animate an iOS app from scratch',
+    this.description = '',
+    this.image='medicine',
     this.iconSrc = "assets/icons/ios.svg",
-    this.color = const Color(0xFF7553F6),
+    this.color = const Color(0xFF1713DB),
   });
 }
 
 final List<Course> courses = [
   Course(
-    title: "Animations in SwiftUI",
+    title: "Order Medicines by Prescription ",
+    description: "Upload your prescription and get your medicines at your home seamlessly. You can use your rewards coins to order medicines."
   ),
   Course(
-    title: "Animations in Flutter",
+    title: "Book Appointment @ 20% off",
     iconSrc: "assets/icons/code.svg",
-    color: const Color(0xFF80A4FF),
+    image: 'hospital',
+    description: "Book Your Appointment to our partner Hospitals and get up to 20% discount",
+    color: const Color(0xFF007AEB),
   ),
+  Course(
+      title: "Get Exclusive Health Insurance offers @ 299Rs",
+      description: "Based on your profile, you'll get exciting offers from our partner companies.",
+      image: 'health'
+  )
 ];
 
 final List<Course> recentCourses = [
-  Course(title: "State Machine"),
   Course(
-    title: "Animated Menu",
-    color: const Color(0xFF9CC5FF),
+    title: "New Chat",
     iconSrc: "assets/icons/code.svg",
   ),
-  Course(title: "Flutter with Rive"),
   Course(
-    title: "Animated Menu",
-    color: const Color(0xFF9CC5FF),
+      title: "Order Medicine",
+      color: const Color(0xFF9CC5FF),
+  ),
+  Course(
+    title: "Book Appointment",
     iconSrc: "assets/icons/code.svg",
   ),
 ];

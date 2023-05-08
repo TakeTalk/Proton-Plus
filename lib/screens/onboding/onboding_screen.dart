@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:ui';
 
+import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -8,11 +10,25 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rive/rive.dart';
 import 'package:rive_animation/loginn.dart';
 import 'package:rive_animation/screens/entryPoint/entry_point.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../firebase_options.dart';
 import 'components/animated_btn.dart';
 import 'components/sign_in_dialog.dart';
+import 'package:location/location.dart';
+
+
+  Map UserDetails={
+    'email':"",
+    'phone':"",
+    'name':"",
+    'photoUrl':"",
+    'rewardsPoints':0,
+    'location_lat':"",
+    'location_long':""
+
+};
+
 
 
 class OnbodingScreen extends StatefulWidget {
@@ -24,40 +40,109 @@ class OnbodingScreen extends StatefulWidget {
 
 class _OnbodingScreenState extends State<OnbodingScreen> {
 
-  googleLogin() async {
-    print("googleLogin method Called");
-    GoogleSignIn _googleSignIn = GoogleSignIn();
-    try {
-      var reslut = await _googleSignIn.signIn();
-      if (reslut == null) {
-        print("googleLogin method Called1");
-        return;
-      }
-      print("googleLogin method Called2");
-      final userData = await reslut.authentication;
-      final credential = GoogleAuthProvider.credential(
-          accessToken: userData.accessToken, idToken: userData.idToken);
-      var finalResult =
-      await FirebaseAuth.instance.signInWithCredential(credential);
-      print("Result $reslut");
+  bool isLoggedIn=false;
+
+  Location location = new Location();
+
+  bool _serviceEnabled=false;
+
+
+  @override
+  void initState() {
+    _btnAnimationController = OneShotAnimation(
+      "active",
+      autoplay: false,
+    );
+
+    super.initState();
+  }
+
+
+
+
+  Future<void> _userSignIn(Map userDetails) async {
+
+
+    var url = Uri.parse('http://43.204.171.36:8989/signIn');
+    var body = jsonEncode(userDetails);
+    var response = await http.post(url,body: body);
+
+
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Logged In successfully"),
+      ));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("error"),
+      ));
+    }
+  }
+
+  fireBaseToUserDetails(result){
+    UserDetails['email']=result.email.toString();
+    UserDetails['name']=result.name.toString();
+    UserDetails['photoUrl']=result.photoUrl.toString();
+    _userSignIn(UserDetails);
+  }
+
+  void checkLogin() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isLoggedIn = prefs.containsKey('email');
+    if(isLoggedIn){
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => const EntryPoint(),
         ),
       );
+    }
+    else{
+      googleLogin();
+    }
+    setState(() {
+
+    });
+  }
+
+  googleLogin() async {
+    print("googleLogin method Called");
+
+    GoogleSignIn _googleSignIn = GoogleSignIn();
+    try {
+      var result = await _googleSignIn.signIn();
+      if (result == null) {
+        print("googleLogin method Called1");
+        return;
+      }
+      print("googleLogin method Called2");
+      final userData = await result.authentication;
+      final credential = GoogleAuthProvider.credential(
+          accessToken: userData.accessToken, idToken: userData.idToken);
+      var finalResult =
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      print("Result $result");
+      // fireBaseToUserDetails(result);   //signIn function
+
       final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-// Save an integer value to 'counter' key.
-      await prefs.setString('name', reslut.displayName.toString());
-      await prefs.setString('email', reslut.email.toString());
-      await prefs.setString("pic", reslut.photoUrl.toString());
+      await prefs.setString('name', result.displayName.toString());
+      await prefs.setString('email', result.email.toString());
+      await prefs.setString('pic', result.photoUrl.toString());
 
-      // if (Navigator.canPop(context)) {
-      //   Navigator.pop(context);
-      // } else {
-      //   SystemNavigator.pop();
-      // }
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const EntryPoint(),
+        ),
+      );
+
+
+
+
+
+
 
     } catch (error) {
       print("googleLogin method Called3");
@@ -69,14 +154,6 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
 
   bool isShowSignInDialog = false;
 
-  @override
-  void initState() {
-    _btnAnimationController = OneShotAnimation(
-      "active",
-      autoplay: false,
-    );
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +219,7 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
                     AnimatedBtn(
                       btnAnimationController: _btnAnimationController,
                       press: () {
-                        googleLogin();
+                        checkLogin();
                       },
                     ),
                     const Padding(
