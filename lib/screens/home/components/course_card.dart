@@ -6,17 +6,18 @@ class CourseCard extends StatelessWidget {
     Key? key,
     required this.title,
     required this.description,
+    required this.image,
     this.color = const Color(0xFF7553F6),
     this.iconSrc = "assets/icons/ios.svg",
   }) : super(key: key);
 
-  final String title, iconSrc,description;
+  final String title, iconSrc,description,image;
   final Color color;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 28),
       height: 280,
       width: 260,
       decoration: BoxDecoration(
@@ -34,14 +35,14 @@ class CourseCard extends StatelessWidget {
                   Text(
                     title,
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        color: Colors.white, fontWeight: FontWeight.w600),
+                        color: Colors.white, fontWeight: FontWeight.w600,height: 1.4 ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 12, bottom: 8),
                     child: Text(
                       description,
-                      style: TextStyle(
-                        color: Colors.white38,
+                      style: const TextStyle(
+                        color: Colors.white70,
                       ),
                     ),
                   ),
@@ -55,7 +56,7 @@ class CourseCard extends StatelessWidget {
                         child: CircleAvatar(
                           radius: 20,
                           backgroundImage: AssetImage(
-                            "assets/avaters/Avatar ${index + 1}.jpg",
+                            "assets/avaters/$image ${index + 1}.jpg",
                           ),
                         ),
                       ),
