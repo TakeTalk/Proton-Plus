@@ -80,7 +80,6 @@ class _ChatPage extends State<ChatPage>{
         uri: result.path,
         width: image.width.toDouble(),
       );
-
       _addMessage(message);
     }
   }
