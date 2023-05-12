@@ -75,7 +75,7 @@ class HomePage extends StatelessWidget {
                     child:SecondaryCourseCard(
                       title: course.title,
                       iconsSrc: course.iconSrc,
-                      colorl: course.color,
+                      color: course.color,
                     ),
                   )) ,
 
