@@ -4,11 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
+
 
   @override
   State<ChatPage> createState() => _ChatPage();
@@ -17,24 +19,70 @@ class ChatPage extends StatefulWidget {
 class _ChatPage extends State<ChatPage>{
   List<types.Message> _messages = [];
 
-  final _user = const types.User(id: '82091008-a484-4a89-ae75-a22bf8d6f3ac');
-  final _bot = const types.User(id: 'proton-plus-bot');
+  String email='';
+  String photo='';
+
+  final _user = const types.User(
+      id: 'user'
+  );
+  final _bot = const types.User(
+      id: 'proton-plus-bot',
+      imageUrl: 'https://raw.githubusercontent.com/TakeTalk/Proton-Plus/main/android/app/src/main/res/mipmap-hdpi/ic_launcher.png?token=GHSAT0AAAAAACA4SW7KUV2CPZAXGGASL5UWZCYWWSQ'
+  );
 
   @override
   void initState() {
     // TODO: implement initState
+    _getUserData();
     _getMessage();
     super.initState();
+  }
+
+  Future<void> _getUserData() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      email = prefs.getString('email') ?? '';
+      photo=prefs.getString('photoUrl')??'';
+    });
+
   }
 
   @override
   Widget build(BuildContext context) {
         // TODO: implement build
     return Scaffold(
-      body: Chat(messages: _messages, onSendPressed: _handleSendPressed, user: _user,theme: const DarkChatTheme()),
+      body: Chat(messages: _messages, onSendPressed: _handleSendPressed, user: _user, showUserAvatars: true,
+        onAttachmentPressed: _handleImageSelection,theme:const DarkChatTheme(
+        inputBackgroundColor: Color(0xFF000C56),
+      ),),
     );
   }
-  //t
+
+  void _handleImageSelection() async {
+    final result = await ImagePicker().pickImage(
+      imageQuality: 70,
+      maxWidth: 1440,
+      source: ImageSource.gallery,
+    );
+
+    if (result != null) {
+      final bytes = await result.readAsBytes();
+      final image = await decodeImageFromList(bytes);
+
+      final message = types.ImageMessage(
+        author: _user,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        height: image.height.toDouble(),
+        id: 'testing',
+        name: result.name,
+        size: bytes.length,
+        uri: result.path,
+        width: image.width.toDouble(),
+      );
+      _addMessage(message);
+    }
+  }
 
   void _addMessage(types.Message message) {
     _updateMessage(message);
@@ -45,7 +93,9 @@ class _ChatPage extends State<ChatPage>{
 
   Future<void> _getMessage() async {
     List<types.Message> reversedList=[];
+
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     final email = prefs.getString('email') ?? '';
 
     var url = Uri.parse('http://43.204.171.36:8989/getChat/$email');
@@ -60,6 +110,7 @@ class _ChatPage extends State<ChatPage>{
         var user= types.User(id: msg['author']['id']);
         var responseMsg = types.TextMessage(
           author: user,
+          showStatus:true,
           createdAt: msg['createdAt'],
           id: msg['id'],
           text: msg['text'],

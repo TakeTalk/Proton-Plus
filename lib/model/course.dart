@@ -23,7 +23,7 @@ final List<Course> courses = [
     iconSrc: "assets/icons/code.svg",
     image: 'hospital',
     description: "Book Your Appointment to our partner Hospitals and get up to 20% discount",
-    color: const Color(0xFF007AEB),
+    color: const Color(0xFF7BBFFF),
   ),
   Course(
       title: "Get Exclusive Health Insurance offers @ 299Rs",
@@ -35,14 +35,16 @@ final List<Course> courses = [
 final List<Course> recentCourses = [
   Course(
     title: "New Chat",
+    color: const Color(0xFF7BBFFF),
     iconSrc: "assets/icons/code.svg",
   ),
   Course(
       title: "Order Medicine",
-      color: const Color(0xFF9CC5FF),
+      color: const Color(0xFF1B6BFF),
   ),
   Course(
     title: "Book Appointment",
     iconSrc: "assets/icons/code.svg",
+    color: const Color(0xFF5320FF),
   ),
 ];
