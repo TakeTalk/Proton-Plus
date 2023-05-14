@@ -1,9 +1,14 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:confetti/confetti.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:lottie/lottie.dart';
+import 'package:material_dialogs/dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:rive/rive.dart';
 import 'package:rive_animation/constants.dart';
 import 'package:rive_animation/screens/home/home_screen.dart';
@@ -12,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:http/http.dart' as http;
 import '../../model/menu.dart';
+import 'check.dart';
 import 'components/menu_btn.dart';
 import 'components/side_bar.dart';
 
@@ -44,11 +50,17 @@ class EntryPoint extends StatefulWidget {
 class _EntryPointState extends State<EntryPoint>
     with SingleTickerProviderStateMixin {
 
+
+  bool isPlaying = false;
+
+  final controller = ConfettiController();
+
   double? lat;
 
   double? long;
 
   String address = "";
+
 
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
@@ -113,7 +125,6 @@ class _EntryPointState extends State<EntryPoint>
   }
 
 
-
   getLatLong() {
     Future<Position> data = _determinePosition();
     data.then((value) {
@@ -164,6 +175,7 @@ class _EntryPointState extends State<EntryPoint>
     SharedPreferences prefs = await SharedPreferences.getInstance();
     UserDetails['email']=prefs.getString('email');
     UserDetails['name']=prefs.getString('name');
+    UserDetails['phone']=prefs.getString('phone');
     UserDetails['photoUrl']=prefs.getString('pic');
     UserDetails['location_lat'] = lat.toString();
     UserDetails['location_long'] = long.toString();
@@ -211,9 +223,21 @@ class _EntryPointState extends State<EntryPoint>
     }
   }
 
+
   @override
   void initState() {
     getLatLong();
+    controller.addListener(() {
+      if (controller.state == ConfettiControllerState.playing) {
+        setState(() {
+          isPlaying = true;
+        });
+      } else {
+        setState(() {
+          isPlaying = false;
+        });
+      }
+    });
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 200))
       ..addListener(
@@ -231,8 +255,29 @@ class _EntryPointState extends State<EntryPoint>
   @override
   void dispose() {
     _animationController.dispose();
+    controller.dispose();
     super.dispose();
   }
+
+  void helpRewards() async {
+    controller.play();
+    Dialogs.materialDialog(
+      color: Colors.white,
+      msg: 'Congratulations, you won 500 points',
+      title: 'Congratulations',
+      context: context,
+    );
+
+    await Future.delayed(Duration(milliseconds: 1200));
+
+
+    // Navigator.of(context).pop();
+    // Navigator.pop(context);
+    controller.stop();
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -241,6 +286,7 @@ class _EntryPointState extends State<EntryPoint>
       resizeToAvoidBottomInset: false,
       backgroundColor: backgroundColor2,
       body: Stack(
+        alignment: Alignment.topCenter,
         children: [
           AnimatedPositioned(
             width: 288,
@@ -249,7 +295,7 @@ class _EntryPointState extends State<EntryPoint>
             curve: Curves.fastOutSlowIn,
             left: isSideBarOpen ? 0 : -288,
             top: 0,
-            child: const SideBar(),
+            child: SideBar(),
           ),
           Transform(
             alignment: Alignment.center,
@@ -277,6 +323,10 @@ class _EntryPointState extends State<EntryPoint>
             top: 16,
             child: MenuBtn(
               press: () {
+
+                // helpRewards();
+
+
                 isMenuOpenInput.value = !isMenuOpenInput.value;
 
                 if (_animationController.value == 0) {
@@ -303,8 +353,50 @@ class _EntryPointState extends State<EntryPoint>
               },
             ),
           ),
+          Align(
+            alignment: Alignment.topCenter,
+            child:ConfettiWidget(
+              confettiController: controller,
+              shouldLoop: true,
+              blastDirectionality: BlastDirectionality.explosive,
+              //blastDirection: pi,
+              emissionFrequency: 0.5,
+              // numberOfParticles: 10,
+              // maxBlastForce: 10,
+              gravity: 1,
+              // colors: [
+              //   Colors.green,
+              //   Colors.black,
+              //   Colors.red,
+              // ],
+              // createParticlePath: (size) {
+              //   double degToRad(double deg) => deg * (pi / 180.0);
+              //
+              //   const numberOfPoints = 5;
+              //   final halfWidth = size.width / 2;
+              //   final externalRadius = halfWidth;
+              //   final internalRadius = halfWidth / 2.5;
+              //   final degreesPerStep = degToRad(360 / numberOfPoints);
+              //   final halfDegreesPerStep = degreesPerStep / 2;
+              //   final path = Path();
+              //   final fullAngle = degToRad(360);
+              //   path.moveTo(size.width, halfWidth);
+              //
+              //   for (double step = 0; step < fullAngle; step += degreesPerStep) {
+              //     path.lineTo(halfWidth + externalRadius * cos(step),
+              //         halfWidth + externalRadius * sin(step));
+              //     path.lineTo(
+              //         halfWidth + internalRadius * cos(step + halfDegreesPerStep),
+              //         halfWidth + internalRadius * sin(step + halfDegreesPerStep));
+              //   }
+              //   path.close();
+              //   return path;
+              // },
+            ),
+          ),
         ],
       ),
     );
   }
+
 }

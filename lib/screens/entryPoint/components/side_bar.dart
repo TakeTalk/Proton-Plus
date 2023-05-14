@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../main.dart';
 import '../../../model/menu.dart';
+import '../../../user_profile.dart';
 import '../../../utils/rive_utils.dart';
 import 'info_card.dart';
 import 'side_menu.dart';
@@ -54,10 +55,20 @@ class _SideBarState extends State<SideBar> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              InfoCard(
-                pic: pic,
-                name: name,
-                bio: email,
+              InkWell(
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserProfile(),
+                  ),
+                );
+              },
+              child: InfoCard(
+              pic: pic,
+              name: name,
+              bio: email,
+              )
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 24, top: 32, bottom: 16),

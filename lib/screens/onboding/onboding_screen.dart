@@ -113,10 +113,8 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
     try {
       var result = await _googleSignIn.signIn();
       if (result == null) {
-        print("googleLogin method Called1");
         return;
       }
-      print("googleLogin method Called2");
       final userData = await result.authentication;
       final credential = GoogleAuthProvider.credential(
           accessToken: userData.accessToken, idToken: userData.idToken);
@@ -125,18 +123,15 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
       print("Result $result");
       // fireBaseToUserDetails(result);   //signIn function
 
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      await prefs.setString('name', result.displayName.toString());
-      await prefs.setString('email', result.email.toString());
-      await prefs.setString('pic', result.photoUrl.toString());
+      await _displayTextInputDialog(context,result.displayName.toString(),result.email.toString(),result.photoUrl.toString());
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const EntryPoint(),
-        ),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => const EntryPoint(),
+      //   ),
+      // );
 
 
 
@@ -154,6 +149,56 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
 
   bool isShowSignInDialog = false;
 
+  TextEditingController _textFieldController = TextEditingController();
+
+  Future<void> _displayTextInputDialog(BuildContext context,String name, String email , String photo) async {
+
+     savePhone(String text) async{
+       final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+       await prefs.setString('name', name);
+       await prefs.setString('email', email);
+       await prefs.setString('pic', photo);
+       await prefs.setString('pic', photo);
+       await prefs.setString('phone', text);
+     }
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          elevation: 50,
+          backgroundColor: Colors.blue.shade100,
+          title: Text('Please Add Your Phone Number'),
+          content: TextField(
+            controller: _textFieldController,
+            decoration: InputDecoration(hintText: "phone"),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('CANCEL'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: Text('OK'),
+              onPressed: () async {
+                await savePhone(_textFieldController.text);
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const EntryPoint(),
+                  ),
+                );
+                // Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
