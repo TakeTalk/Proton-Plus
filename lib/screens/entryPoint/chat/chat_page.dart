@@ -36,7 +36,6 @@ class _ChatPage extends State<ChatPage>{
   );
   final _bot = const types.User(
       id: 'proton-plus-bot',
-      imageUrl: 'https://raw.githubusercontent.com/TakeTalk/Proton-Plus/main/android/app/src/main/res/mipmap-hdpi/ic_launcher.png?token=GHSAT0AAAAAACA4SW7KUV2CPZAXGGASL5UWZCYWWSQ'
   );
 
   @override
@@ -61,7 +60,7 @@ class _ChatPage extends State<ChatPage>{
   Widget build(BuildContext context) {
         // TODO: implement build
     return Scaffold(
-      body: Chat(messages: _messages, onSendPressed: _handleSendPressed, user: _user, showUserAvatars: true,
+      body: Chat(messages: _messages, onSendPressed: _handleSendPressed, user: _user,
         onAttachmentPressed: _handleImageSelection,theme:const DarkChatTheme(
         inputBackgroundColor: Color(0xFF000C56),
       ),),
@@ -92,48 +91,77 @@ class _ChatPage extends State<ChatPage>{
         uri: result.path,
         width: image.width.toDouble(),
       );
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final email = prefs.getString('email') ?? '';
-      var time = DateTime.now().millisecondsSinceEpoch;
 
-      var request = http.MultipartRequest(
-        'POST',
-        Uri.parse('http://43.204.171.36:8989/medicineDetect/$email/$time'),
-      );
+      _addMessage(message);
 
-      request.files.add(await http.MultipartFile.fromPath('file', result.path));
-      // var body = jsonEncode(message);
-      return request.send().then((response) {
-        if (response.statusCode == 200) {
+      _getMedicine(result);
+
+    }
+  }
+
+  void _getMedicine(var result) async{
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final email = prefs.getString('email') ?? '';
+    var time = DateTime.now().millisecondsSinceEpoch;
+
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse('http://43.204.171.36:8989/medicineDetect/$email/$time'),
+    );
+
+    request.files.add(await http.MultipartFile.fromPath('file', result.path));
+
+    request.send().then((response) {
+      if (response.statusCode == 200) {
+        var msgRply='';
+        response.stream.transform(utf8.decoder).listen((value) {
           final botRply = types.TextMessage(
             author: _bot,
             createdAt: DateTime.now().millisecondsSinceEpoch,
             id: DateTime.now().millisecondsSinceEpoch.toString(),
-            text: response.toString(),
+            text: value.toString(),
           );
           _addMessage(botRply);
-          Fluttertoast.showToast(
-              msg: "response",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.CENTER,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.white,
-              textColor: Colors.black,
-              fontSize: 16.0
-          );
-          return http.Response.fromStream(response);
-        } else {
-          throw Exception('Failed to upload file');
-        }
-      });
-      // final httpImage = http.MultipartFile.fromBytes('files.myimage', bytes,
-      //     contentType: MediaType.parse(mimeType), filename: result.name);
-      // url.files.add(httpImage);
+        });
 
-      // await http.post(url,body: body,headers: { 'Content-type': 'application/json'});
-      // _addMessage(message);
-    }
+
+
+
+      } else {
+        throw Exception('Failed to upload file');
+      }
+    });
+
   }
+
+  // upload(File imageFile,var stream,var name) async {
+  //
+  //   // get file length
+  //   var length = await imageFile.length();
+  //
+  //   // string to uri
+  //   var uri = Uri.parse("http://ip:8082/composer/predict");
+  //
+  //   // create multipart request
+  //   var request = new http.MultipartRequest("POST", uri);
+  //
+  //   // multipart that takes file
+  //   var multipartFile = new http.MultipartFile('file', stream, length,
+  //       filename: name);
+  //
+  //   // add file to multipart
+  //   request.files.add(multipartFile);
+  //
+  //   // send
+  //   var response = await request.send();
+  //   print(response.statusCode);
+  //
+  //   // listen for response
+  //   response.stream.transform(utf8.decoder).listen((value) {
+  //     print(value);
+  //   });
+  // }
 
   void _addMessage(types.Message message) {
     _updateMessage(message);
