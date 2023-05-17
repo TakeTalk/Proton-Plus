@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../main.dart';
 import '../../../model/menu.dart';
+import '../../../reedem_page.dart';
 import '../../../user_profile.dart';
 import '../../../utils/rive_utils.dart';
 import 'info_card.dart';

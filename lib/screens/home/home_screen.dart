@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rive_animation/main.dart';
+import 'package:rive_animation/reedem_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../model/course.dart';
 import '../entryPoint/chat/ChatScreen.dart';
@@ -42,12 +44,25 @@ class HomePage extends StatelessWidget {
                         .map(
                           (course) => Padding(
                         padding: const EdgeInsets.only(left: 20),
+                        child:GestureDetector(
+                          onTap: (){
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(course.title.toString()),
+                            ));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ReedemPage(),
+                              ),
+                            );
+                          },
                         child: CourseCard(
                           title: course.title,
                           iconSrc: course.iconSrc,
                           image: course.image,
                           color: course.color,
                           description: course.description,
+                        ),
                         ),
                       ),
                     )

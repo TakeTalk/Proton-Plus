@@ -56,6 +56,8 @@ dependencies:
   lottie: ^2.3.2
   image_picker: ^0.8.7+4
   modal_progress_hud_nsn: ^0.1.0-nullsafety-0
+  coupon_uikit: ^0.2.0
+  dotted_decoration: ^2.0.0
   flutter_tts: ^3.6.3
 
 
