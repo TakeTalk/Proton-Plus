@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_tts/flutter_tts.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -24,6 +25,14 @@ class _ChatPage extends State<ChatPage>{
   bool isPlaying = false;
   File? immage;
   String? immageName;
+
+  FlutterTts flutterTts=FlutterTts();
+
+  speak(String text) async{
+    await flutterTts.setLanguage("en-US");
+    await flutterTts.setPitch(1);
+    await flutterTts.speak(text);
+  }
 
   final controller = ConfettiController();
   // final _user = const types.User(id: '82091008-a484-4a89-ae75-a22bf8d6f3ac');
@@ -270,8 +279,10 @@ class _ChatPage extends State<ChatPage>{
 
         _addMessage(botRply);
 
+        speak(msgReply);
+
       } else {
-        print('error');
+        // print('error');
       }
   }
 
