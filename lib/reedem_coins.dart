@@ -39,7 +39,7 @@ class ReedemCoins extends StatefulWidget {
     ['Flat 10% OFF in Medical Equipment', 400, 'assets/images/eq.jpg'],
     [
       'Full Body Checkup  worth ₹7999',
-      7000,
+      000,
       'assets/images/check.jpg'
     ],
   ];
@@ -57,9 +57,9 @@ class _ReedemCoinsState extends State<ReedemCoins> {
         const SizedBox(
           height: 20,
         ),
-        HorizontalChips(
-          values: widget.chipData,
-        ),
+        // HorizontalChips(
+        //   values: widget.chipData,
+        // ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
          
@@ -67,17 +67,17 @@ class _ReedemCoinsState extends State<ReedemCoins> {
         
         
         ),
-        const Padding(
-          padding: EdgeInsets.only(left: 10.0, bottom: 10, top: 20),
-          child: Text(
-            'Earn Coins',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+        // const Padding(
+        //   padding: EdgeInsets.only(left: 10.0, bottom: 10, top: 20),
+        //   child: Text(
+        //     'Earn Coins',
+        //     style: TextStyle(
+        //       color: Colors.white,
+        //       fontSize: 25,
+        //       fontWeight: FontWeight.bold,
+        //     ),
+        //   ),
+        // ),
         Expanded(
           child: CoupnsGrid(
             datas: widget.vouchers,

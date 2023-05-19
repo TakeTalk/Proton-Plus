@@ -23,7 +23,7 @@ class CoupnsGrid extends StatelessWidget {
                 curvePosition: 160,
                 curveRadius: 30,
                 borderRadius: 10,
-                backgroundColor: const Color.fromARGB(255, 51, 51, 51),
+                backgroundColor: const Color.fromARGB(255, 231, 220, 201),
                 firstChild: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -58,10 +58,10 @@ class CoupnsGrid extends StatelessWidget {
                 ),
                 secondChild: Container(
                     width: double.maxFinite,
-                    decoration: DottedDecoration(
-                        color: Colors.white,
-                        shape: Shape.line,
-                        linePosition: LinePosition.top),
+                    // decoration: DottedDecoration(
+                    //     color: Colors.white,
+                    //     shape: Shape.line,
+                    //     linePosition: LinePosition.top),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -94,12 +94,12 @@ class CoupnsGrid extends StatelessWidget {
                           child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: Color.fromARGB(255, 225, 2, 2)),
+                                color: Color(0xFF5320FF)),
                             child: const Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 5),
                               child: Text(
-                                'View Details',
+                                'Claim',
                                 style: TextStyle(
                                   color: Color.fromARGB(255, 237, 237, 237),
                                   fontSize: 15,
@@ -110,7 +110,8 @@ class CoupnsGrid extends StatelessWidget {
                           ),
                         ),
                       ],
-                    ))),
+                    ))
+            ),
           );
         }));
   }
