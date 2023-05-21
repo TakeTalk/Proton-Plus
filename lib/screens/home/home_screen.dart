@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const ReedemPage(),
+                                builder: (context) => const question(),
                               ),
                             );
                             // _displayTextInputDialog(context);

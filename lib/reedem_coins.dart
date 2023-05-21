@@ -17,7 +17,7 @@ class ReedemCoins extends StatefulWidget {
     'Chips 10'
   ];
 
-  final vouchers = [
+   static dynamic vouchers = [
     ['Get 1 free Health checkup on Apollo Hospital', 600, 'assets/images/myntra.jpg'],
     [
       'Buy Medicines using Coins (1 coins = 1 INR)',
@@ -80,7 +80,7 @@ class _ReedemCoinsState extends State<ReedemCoins> {
         // ),
         Expanded(
           child: CoupnsGrid(
-            datas: widget.vouchers,
+            datas: ReedemCoins.vouchers,
           ),
         ),
       ],

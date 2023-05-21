@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../reedem_coins.dart';
+import 'package:http/http.dart' as http;
+import '../../reedem_page.dart';
 
 class question extends StatefulWidget {
   const question({Key? key}) : super(key: key);
@@ -89,7 +94,9 @@ class _questionState extends State<question> {
             style: ElevatedButton.styleFrom(
               primary: const Color(0xFF000C56),
             ), onPressed: () {
-              // save()
+
+              reedemProces();
+
           },
           ),
           ],
@@ -98,6 +105,67 @@ class _questionState extends State<question> {
       ),
       ),
     );
+  }
+
+  Future<void> reedemProces() async {
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final email = prefs.getString('email') ?? '';
+
+    var value = new Map();
+    value["email"] = email;
+    value["brain"] = (brain! || brainNuro!);
+    value["heart"] = heart;
+    value["lungs"] = laungs;
+    value["liver"] = liver;
+    value["kidney"] = false;
+    value["ortho"] = bones;
+
+    // {
+    //   "email": "string",
+    // "brain": false,
+    // "heart": false,
+    // "lungs": false,
+    // "liver": false,
+    // "kidney": false,
+    // "ortho": false
+    // }
+
+    // var request = http.MultipartRequest(
+    //   'POST',
+    //   Uri.parse(),
+    // );
+
+    final response = await http.put(
+      Uri.parse('http://43.204.171.36:8989/updateHealth/$email'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(value),
+    );
+
+    // request.files.add(await http.MultipartFile.fromPath('file', result.path));
+
+    // response.send().then((response) {
+    if (response.statusCode == 200) {
+                // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                //   content: Text(response.body),
+                // ));
+      ReedemCoins.vouchers = jsonDecode(response.body);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ReedemPage(),
+        ),
+      );
+
+
+    } else {
+    throw Exception('Failed to upload file');
+    }
+    // });
+
+
+    // type 'String' is not a subtype of type 'List<List<Object>>' in type cast
+
   }
 
 
