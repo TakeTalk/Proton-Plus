@@ -56,20 +56,22 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.only(left: 20),
                         child:GestureDetector(
                           onTap: (){
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(course.title.toString()),
-                            ));
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const question(),
-                              ),
-                            );
-                            // _displayTextInputDialog(context);
+                            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            //   content: Text(course.title.toString()),
+                            // ));
+                            if(course.title.toString() == "Get Exclusive Health Insurance offers @ 299Rs"){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const question(),
+                                    ),
+                                  );
+                                }
+                                // _displayTextInputDialog(context);
                           },
                         child: CourseCard(
                           title: course.title,
-                          iconSrc: course.iconSrc,
+                          iconSrc:"",
                           image: course.image,
                           color: course.color,
                           description: course.description,
@@ -100,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                     },
                     child:SecondaryCourseCard(
                       title: course.title,
-                      iconsSrc: course.iconSrc,
+                      iconsSrc: "",
                       color: course.color,
                     ),
                   )) ,

@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:rive_animation/screens/entryPoint/chat/chat.dart';
-class UserProfile extends StatelessWidget {
+import 'package:rive_animation/utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
 
+  @override
+  State<UserProfile> createState() => _UserProfileState();
+}
+
+class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     TextEditingController name = TextEditingController();
@@ -12,12 +19,13 @@ class UserProfile extends StatelessWidget {
         TextEditingController Weight = TextEditingController();
          TextEditingController BloodGroup = TextEditingController();
           TextEditingController Medical_History = TextEditingController();
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.only(top: 50.0),
           child: Stack(
-            children:<Widget>[ 
+            children:<Widget>[
               Container(
                    margin: EdgeInsets.only(top:80.0),
                    width: MediaQuery.of(context).size.width,
@@ -28,12 +36,12 @@ class UserProfile extends StatelessWidget {
                       topLeft: Radius.circular(40),
                         topRight: Radius.circular(40),
                     )
-        
-        
+
+
                    ),
-        
+
                 child: Column(children: <Widget>[
-              
+
                   Container(
                     padding: EdgeInsets.only(top:70.0,left:20.0,right: 20.0),
                     child: Column(children: <Widget>[
@@ -44,10 +52,10 @@ class UserProfile extends StatelessWidget {
                           prefixIcon: Icon(Icons.person),
                           border:myInputBorder(),
                           enabledBorder: myInputBorder(),
-                          focusedBorder: myFocusBorder(), 
+                          focusedBorder: myFocusBorder(),
                         ),
                       ),
-                           
+
                       SizedBox(height: 20.0,),
                                TextField(
                         controller: Medical_condition,
@@ -56,7 +64,7 @@ class UserProfile extends StatelessWidget {
                           prefixIcon: Icon(Icons.medical_information),
                           border:myInputBorder(),
                           enabledBorder: myInputBorder(),
-                          focusedBorder: myFocusBorder(), 
+                          focusedBorder: myFocusBorder(),
                         ),
                       ),
                       SizedBox(height: 20.0,),
@@ -67,7 +75,7 @@ class UserProfile extends StatelessWidget {
                           prefixIcon: Icon(Icons.person_3),
                           border:myInputBorder(),
                           enabledBorder: myInputBorder(),
-                          focusedBorder: myFocusBorder(), 
+                          focusedBorder: myFocusBorder(),
                         ),
                       ),
                       SizedBox(height: 20.0,),
@@ -78,7 +86,7 @@ class UserProfile extends StatelessWidget {
                           prefixIcon: Icon(Icons.person_add_alt_1_rounded),
                           border:myInputBorder(),
                           enabledBorder: myInputBorder(),
-                          focusedBorder: myFocusBorder(), 
+                          focusedBorder: myFocusBorder(),
                         ),
                       ),
                       SizedBox(height: 20.0,),
@@ -89,7 +97,7 @@ class UserProfile extends StatelessWidget {
                           prefixIcon: Icon(Icons.monitor_weight_rounded),
                           border:myInputBorder(),
                           enabledBorder: myInputBorder(),
-                          focusedBorder: myFocusBorder(), 
+                          focusedBorder: myFocusBorder(),
                         ),
                       ),
                       SizedBox(height: 20.0,),
@@ -100,7 +108,7 @@ class UserProfile extends StatelessWidget {
                           prefixIcon: Icon(Icons.bloodtype),
                           border:myInputBorder(),
                           enabledBorder: myInputBorder(),
-                          focusedBorder: myFocusBorder(), 
+                          focusedBorder: myFocusBorder(),
                         ),
                       ),
                       SizedBox(height: 20.0,),
@@ -111,7 +119,7 @@ class UserProfile extends StatelessWidget {
                           prefixIcon: Icon(Icons.medical_information_sharp),
                           border:myInputBorder(),
                           enabledBorder: myInputBorder(),
-                          focusedBorder: myFocusBorder(), 
+                          focusedBorder: myFocusBorder(),
                         ),
                       ),
                       SizedBox
@@ -127,13 +135,13 @@ class UserProfile extends StatelessWidget {
                     primary: Color(0xFF1713DB),
                     padding: EdgeInsets.symmetric(horizontal: 45.0,vertical: 20.0),
                     textStyle: TextStyle(fontSize: 25,fontWeight: FontWeight.bold)
-      
+
                    ),
-                   
+
                    )
-                  
-                  
-                  
+
+
+
                     ],),
                   )
                 ],
@@ -144,8 +152,8 @@ class UserProfile extends StatelessWidget {
             child: Stack(
              children: <Widget>[
                ClipOval(
-              child: Image.asset('images/person.jpg'
-              ,width: 150,height: 150,fit: BoxFit.cover,),
+              child:Image.network(getPic()
+              ,fit: BoxFit.fill,),
             ),
             // Icon(Icons.edit,size: 30.0 ,)
             Positioned(
@@ -163,17 +171,19 @@ class UserProfile extends StatelessWidget {
         ),
       ));
   }
+
   OutlineInputBorder myInputBorder(){
     return OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20)),
-    
+
     borderSide: BorderSide(
       color: Color.fromARGB(255, 140, 175, 250),
       width: 3,
     ));
   }
+
     OutlineInputBorder myFocusBorder(){
     return OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20)),
-    
+
     borderSide: BorderSide(
       color: Color.fromARGB(255, 2, 219, 247),
       width: 3,

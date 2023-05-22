@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rive_animation/reedem_coins.dart';
+import 'package:rive_animation/utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class ReedemPage extends StatefulWidget {
   const ReedemPage({super.key});
@@ -9,6 +12,31 @@ class ReedemPage extends StatefulWidget {
 }
 
 class _ReedemPageState extends State<ReedemPage> {
+  var coin = get();
+
+  // Future getCoin() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //
+  //   final email = prefs.getString('email') ?? '';
+  //
+  //   var url = Uri.parse('http://43.204.171.36:8989/getPoints/$email');
+  //
+  //   var response =await http.get(url,headers: { 'Content-type': 'application/json'});
+  //
+  //   if(response.statusCode == 200){
+  //     coin = response.body;
+  //   }else{
+  //     coin = response.body+"error";
+  //   }
+  //
+  // }
+  //
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   getCoin();
+  // }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -58,8 +86,8 @@ class _ReedemPageState extends State<ReedemPage> {
                             const SizedBox(
                               width: 10,
                             ),
-                            const Text(
-                              '100',
+                            Text(
+                              coin,
                               style: TextStyle(
                                 color: Color.fromARGB(255, 224, 225, 236),
                                 fontSize: 40,
