@@ -23,7 +23,7 @@ class CoupnsGrid extends StatelessWidget {
                 curvePosition: 160,
                 curveRadius: 30,
                 borderRadius: 10,
-                backgroundColor: const Color.fromARGB(255, 231, 220, 201),
+                backgroundColor: const Color.fromARGB(255, 32, 137, 255),
                 firstChild: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
