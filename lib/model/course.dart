@@ -20,7 +20,7 @@ final List<Course> courses = [
   ),
   Course(
     title: "Book Appointment @ 20% off",
-    iconSrc: "assets/icons/code.svg",
+    iconSrc: "",
     image: 'hospital',
     description: "Book Your Appointment to our partner Hospitals and get up to 20% discount",
     color: const Color(0xFF7BBFFF),
@@ -36,7 +36,7 @@ final List<Course> recentCourses = [
   Course(
     title: "New Chat",
     color: const Color(0xFF7BBFFF),
-    iconSrc: "assets/icons/code.svg",
+    iconSrc: "",
   ),
   Course(
       title: "Order Medicine",
@@ -44,7 +44,7 @@ final List<Course> recentCourses = [
   ),
   Course(
     title: "Book Appointment",
-    iconSrc: "assets/icons/code.svg",
+    iconSrc: "",
     color: const Color(0xFF5320FF),
   ),
 ];

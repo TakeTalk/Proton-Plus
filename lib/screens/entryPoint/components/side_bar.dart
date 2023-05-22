@@ -9,6 +9,7 @@ import '../../../model/menu.dart';
 import '../../../reedem_page.dart';
 import '../../../user_profile.dart';
 import '../../../utils/rive_utils.dart';
+import '../../home/questions.dart';
 import 'info_card.dart';
 import 'side_menu.dart';
 
@@ -86,6 +87,12 @@ class _SideBarState extends State<SideBar> {
                         menu: menu,
                         selectedMenu: selectedSideMenu,
                         press: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const question(),
+                            ),
+                          );
                           RiveUtils.chnageSMIBoolState(menu.rive.status!);
                           setState(() {
                             selectedSideMenu = menu;
@@ -160,6 +167,7 @@ class _SideBarState extends State<SideBar> {
     name = prefs.getString("name")!;
     email = prefs.getString("email")!;
     pic = prefs.getString("pic")!;
+
 
     setState(() {
 

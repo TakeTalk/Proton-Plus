@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../reedem_coins.dart';
 import 'package:http/http.dart' as http;
 import '../../reedem_page.dart';
+import '../../../utils.dart';
 
 class question extends StatefulWidget {
   const question({Key? key}) : super(key: key);
@@ -16,6 +17,32 @@ class question extends StatefulWidget {
 
 class _questionState extends State<question> {
   bool? heart = false,brainNuro = false,brain = false,laungs = false,liver = false,bones = false;
+
+  late final coin ;
+
+  Future getCoin() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final email = prefs.getString('email') ?? '';
+
+    var url = Uri.parse('http://43.204.171.36:8989/getPoints/$email');
+
+    var response =await http.get(url,headers: { 'Content-type': 'application/json'});
+
+    if(response.statusCode == 200){
+      save(response.body);
+    }else{
+      coin = response.body+"error";
+    }
+
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCoin();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

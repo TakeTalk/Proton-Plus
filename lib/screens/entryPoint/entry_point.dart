@@ -12,6 +12,7 @@ import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:rive/rive.dart';
 import 'package:rive_animation/constants.dart';
 import 'package:rive_animation/screens/home/home_screen.dart';
+import 'package:rive_animation/utils.dart';
 import 'package:rive_animation/utils/rive_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -179,6 +180,7 @@ class _EntryPointState extends State<EntryPoint>
     UserDetails['photoUrl']=prefs.getString('pic');
     UserDetails['location_lat'] = lat.toString();
     UserDetails['location_long'] = long.toString();
+    savePic(prefs.getString('pic'));
     _userSignIn(UserDetails);
   }
 
