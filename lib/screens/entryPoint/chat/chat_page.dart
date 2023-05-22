@@ -279,7 +279,7 @@ class _ChatPage extends State<ChatPage>{
       for(var medicine in suggestMeds){
         var h1= "";
         if(medicine!={}){
-          h1+= "name" + medicine["name"] + "\nDosage : " + medicine['time'] + "\nPrice :"+  medicine["price"].toString();
+          h1+=  medicine["name"] + "\nDosage : " + medicine['time'] + "\nPrice :"+  medicine["price"].toString();
           total+=medicine["price"];
         }
         reply+=h1;
