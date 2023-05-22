@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,6 +18,8 @@ import '../../firebase_options.dart';
 import 'components/animated_btn.dart';
 import 'components/sign_in_dialog.dart';
 import 'package:location/location.dart';
+
+import 'components/sign_in_form.dart';
 
 
   Map UserDetails={
@@ -109,6 +113,8 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
   googleLogin() async {
     print("googleLogin method Called");
 
+
+
     GoogleSignIn _googleSignIn = GoogleSignIn();
     try {
       var result = await _googleSignIn.signIn();
@@ -122,9 +128,32 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
       await FirebaseAuth.instance.signInWithCredential(credential);
       print("Result $result");
       // fireBaseToUserDetails(result);   //signIn function
+      var email = result.email;
+
+      var url = Uri.parse('http://43.204.171.36:8989/getPhone/$email');
+      var response = await http.get(url);
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content:Text(response.body),
+      ));
+
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
 
 
+      if(response.body=="null" || response.body=="\"null\"" || response.body == "\"\"")
       await _displayTextInputDialog(context,result.displayName.toString(),result.email.toString(),result.photoUrl.toString());
+      else {
+        await prefs.setString('name', result.displayName.toString());
+        await prefs.setString('email', result.email.toString());
+        await prefs.setString('pic', result.photoUrl.toString());
+        await prefs.setString('phone', response.body);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const EntryPoint(),
+          ),
+        );
+      }
 
       // Navigator.push(
       //   context,
@@ -159,43 +188,132 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
        await prefs.setString('name', name);
        await prefs.setString('email', email);
        await prefs.setString('pic', photo);
-       await prefs.setString('pic', photo);
        await prefs.setString('phone', text);
      }
     return showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          elevation: 50,
-          backgroundColor: Colors.blue.shade100,
-          title: Text('Please Add Your Phone Number'),
-          content: TextField(
-            controller: _textFieldController,
-            decoration: InputDecoration(hintText: "phone"),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('CANCEL'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+        return Center(
+          child: Container(
+            height: 320,
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.95),
+              borderRadius: BorderRadius.circular(40),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  offset: const Offset(0, 30),
+                  blurRadius: 60,
+                ),
+                const BoxShadow(
+                  color: Colors.black45,
+                  offset: Offset(0, 30),
+                  blurRadius: 60,
+                ),
+              ],
             ),
-            TextButton(
-              child: Text('OK'),
-              onPressed: () async {
-                await savePhone(_textFieldController.text);
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const EntryPoint(),
-                  ),
-                );
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              resizeToAvoidBottomInset: false,
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const Text(
+                      "Add Your Phone Number",
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8, bottom: 16),
+                          child: TextField(
+                                controller: _textFieldController,
+                                decoration: InputDecoration(hintText: "phone"),
+                              ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8, bottom: 24),
+                          child: ElevatedButton.icon(
+                            onPressed: () async {
+                              await savePhone(_textFieldController.text);
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                builder: (context) => const EntryPoint(),
+                              ),
+                              );
                 // Navigator.pop(context);
-              },
+                          },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFF77D8E),
+                              minimumSize: const Size(double.infinity, 56),
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(25),
+                                  bottomRight: Radius.circular(25),
+                                  bottomLeft: Radius.circular(25),
+                                ),
+                              ),
+                            ),
+                            icon: const Icon(
+                              CupertinoIcons.arrow_right,
+                              color: Color(0xFFFE0037),
+                            ),
+                            label: const Text("Sign In"),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+
+
+              ),
             ),
-          ],
+          ),
         );
+        // AlertDialog(
+        //   elevation: 50,
+        //   backgroundColor: Colors.blue.shade100,
+        //   title: Text('Please Add Your Phone Number'),
+        //   content: TextField(
+        //     controller: _textFieldController,
+        //     decoration: InputDecoration(hintText: "phone"),
+        //   ),
+        //   actions: <Widget>[
+        //     TextButton(
+        //       child: Text('CANCEL'),
+        //       onPressed: () {
+        //         Navigator.pop(context);
+        //       },
+        //     ),
+        //     TextButton(
+        //       child: Text('OK'),
+        //       onPressed: () async {
+        //         await savePhone(_textFieldController.text);
+        //         Navigator.pop(context);
+        //         Navigator.push(
+        //           context,
+        //           MaterialPageRoute(
+        //             builder: (context) => const EntryPoint(),
+        //           ),
+        //         );
+        //         // Navigator.pop(context);
+        //       },
+        //     ),
+        //   ],
+        // );
       },
     );
   }
