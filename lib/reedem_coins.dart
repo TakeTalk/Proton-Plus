@@ -8,13 +8,11 @@ class ReedemCoins extends StatefulWidget {
   bool value = false;
 
   final List<String> chipData = [
-    'Hosptal',
-    'Insurance',
+    'Hospital',
+    'Medicines',
     'Insurance',
     'Food',
     'others',
-    'Chips 9',
-    'Chips 10'
   ];
 
    static dynamic vouchers = [

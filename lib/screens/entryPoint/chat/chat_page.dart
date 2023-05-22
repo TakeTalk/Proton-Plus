@@ -129,7 +129,7 @@ class _ChatPage extends State<ChatPage>{
             author: _bot,
             createdAt: DateTime.now().millisecondsSinceEpoch,
             id: DateTime.now().millisecondsSinceEpoch.toString(),
-            text: value.toString(),
+            text: formatMessage(value.toString(),1),
           );
           _addMessage(botRply);
         });
@@ -226,17 +226,22 @@ class _ChatPage extends State<ChatPage>{
 
   }
 
-  String formatMessage(String message){
+  String formatMessage(String message,int type){
     var msgReply=jsonDecode(message);
 
-    msgReply=msgReply[0];
+    if(type==0) {
+      msgReply = msgReply[0];
+    }
+
 
     if(msgReply["greeting"]!=null){
+      speak(msgReply["greeting"]);
       return msgReply["greeting"];
     }
     if(msgReply["hospital suggestion"]!=null){
       var suggestHospital=msgReply["hospital suggestion"];
       String reply='Based on your location best hospitals are :\n\n\n';
+      speak(reply);
       int i=0;
       for(var hospital in suggestHospital){
         ++i;
@@ -248,12 +253,42 @@ class _ChatPage extends State<ChatPage>{
 
     }
     if(msgReply["appointment"]!=null){
+      speak(msgReply["appointment"]);
       return msgReply["appointment"];
     }
     if(msgReply["not found"]!=null){
+      speak(msgReply["not found"]);
       return msgReply["not found"];
     }
 
+    if(msgReply["exit"]!=null){
+      speak(msgReply["exit"]);
+      return msgReply['exit'];
+    }
+
+    if(msgReply['this is me']!=null){
+      speak(msgReply['this is me']);
+      return msgReply['this is me'];
+    }
+
+    if(msgReply['medicineSuggestion']!=null){
+      var suggestMeds = msgReply["medicineSuggestion"];
+      String reply='Detected Medicines are :\n\n\n';
+      speak(reply);
+      num total=0;
+      for(var medicine in suggestMeds){
+        var h1= "";
+        if(medicine!={}){
+          h1+=  medicine["name"] + "\nDosage : " + medicine['time'] + "\nPrice :"+  medicine["price"].toString();
+          total+=medicine["price"];
+        }
+        reply+=h1;
+      }
+      reply+="\n\n"+"Total Price is "+total.toString();
+      reply+="\n\n\n" + "Please confirm and pay the amount";
+
+      return reply;
+    }
     return "";
   }
 
@@ -266,7 +301,7 @@ class _ChatPage extends State<ChatPage>{
 
       var response = await http.get(url);
 
-      var msgReply=formatMessage(response.body);
+      var msgReply=formatMessage(response.body,0);
 
       if (response.statusCode == 200) {
 
@@ -279,14 +314,14 @@ class _ChatPage extends State<ChatPage>{
 
         _addMessage(botRply);
 
-        speak(msgReply);
-
       } else {
         // print('error');
       }
   }
 
   void _handleSendPressed(types.PartialText message) {
+
+
 
     final textMessage = types.TextMessage(
       author: _user,

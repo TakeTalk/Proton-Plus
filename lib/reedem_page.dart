@@ -36,7 +36,7 @@ class _ReedemPageState extends State<ReedemPage> {
                 flexibleSpace: Container(
                   decoration: const BoxDecoration(
                       gradient: LinearGradient(
-                          colors:[Color(0xFF1B6BFF), Color(0xFF7BBFFF)],
+                          colors:[Color(0xFF4D1BFF), Color(0xFFC0DDFC)],
                           stops: [0, 1],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight)),
@@ -155,7 +155,7 @@ class _ReedemPageState extends State<ReedemPage> {
                 child: Column(
                   children: [
                     const Text(
-                      "Earn Coin",
+                      "How do you earn coins ?",
                       style: TextStyle(
                         fontSize: 24,
                         fontFamily: "Poppins",
@@ -163,11 +163,10 @@ class _ReedemPageState extends State<ReedemPage> {
                       ),
                     ),
                     const Text(
-                      "You can earn coin from booking appointment You can earn coin from ",
+                      "1 > You can earn coin from booking appointment You can earn coin from ",
                       style: TextStyle(
-                        fontSize: 10,
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                        fontFamily: "Poppins"
                       ),
                     ),
                   ],
