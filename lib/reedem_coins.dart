@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rive_animation/widgets/coupn_grid.dart';
+import 'package:rive_animation/widgets/horizontal_chips_desktop.dart';
 import 'widgets/horizontal_chips.dart';
 
 // ignore: must_be_immutable
@@ -55,16 +56,14 @@ class _ReedemCoinsState extends State<ReedemCoins> {
         const SizedBox(
           height: 20,
         ),
-        // HorizontalChips(
+        // MediaQuery.of(context).size.width < 800
+        //     ? HorizontalChips(
         //   values: widget.chipData,
+        // )
+        //     : HorizontalChipsDesktop(values: widget.chipData),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
         // ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-         
-            
-        
-        
-        ),
         // const Padding(
         //   padding: EdgeInsets.only(left: 10.0, bottom: 10, top: 20),
         //   child: Text(

@@ -29,7 +29,14 @@ final List<Course> courses = [
       title: "Get Exclusive Health Insurance offers @ 299Rs",
       description: "Based on your profile, you'll get exciting offers from our partner companies.",
       image: 'health'
-  )
+  ),
+  Course(
+    title: "Redeem your Coins and get Exciting vouchers",
+    iconSrc: "",
+    image: 'hospital',
+    description: "Use your Proton Coins to get Exciting vouchers from Myntra , lenskart and more",
+    color: const Color(0xFF7BBFFF),
+  ),
 ];
 
 final List<Course> recentCourses = [
