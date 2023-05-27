@@ -133,9 +133,9 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
       var url = Uri.parse('http://43.204.171.36:8989/getPhone/$email');
       var response = await http.get(url);
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content:Text(response.body),
-      ));
+      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      //   content:Text(response.body),
+      // ));
 
       final SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -372,9 +372,6 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
                             ),
                           ),
                           SizedBox(height: 16),
-                          Text(
-                            "Don’t skip design. Learn design and code, by building real apps with Flutter and Swift. Complete courses about the best tools.",
-                          ),
                         ],
                       ),
                     ),
@@ -388,7 +385,7 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 24),
                       child: Text(
-                          "Purchase includes access to 30+ courses, 240+ premium tutorials, 120+ hours of videos, source files and certificates."),
+                          ""),
                     )
                   ],
                 ),

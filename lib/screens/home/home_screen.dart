@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -10,6 +11,7 @@ import 'package:rive_animation/reedem_page.dart';
 import 'package:rive_animation/screens/home/questions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../model/course.dart';
+import '../../utils.dart';
 import '../entryPoint/chat/ChatScreen.dart';
 import '../entryPoint/chat/chat.dart';
 import 'components/course_card.dart';
@@ -24,6 +26,32 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool? isVerified1 = false,isVerified2 = false;
+
+  late final coin ;
+
+  Future getCoin() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final email = prefs.getString('email') ?? '';
+
+    var url = Uri.parse('http://43.204.171.36:8989/getPoints/$email');
+
+    var response =await http.get(url,headers: { 'Content-type': 'application/json'});
+
+    if(response.statusCode == 200){
+      save(response.body);
+    }else{
+      coin = response.body+"error";
+    }
+
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCoin();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,6 +95,14 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   );
                                 }
+                            else{
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ReedemPage(),
+                                ),
+                              );
+                            }
                                 // _displayTextInputDialog(context);
                           },
                         child: CourseCard(
