@@ -271,6 +271,16 @@ class _ChatPage extends State<ChatPage>{
       return msgReply['this is me'];
     }
 
+    if(msgReply['order']!=null){
+      speak(msgReply['order']);
+      return msgReply['order'];
+    }
+
+    if(msgReply['cancel']!=null){
+      speak(msgReply['cancel']);
+      return msgReply['cancel'];
+    }
+
     if(msgReply['medicineSuggestion']!=null){
       var suggestMeds = msgReply["medicineSuggestion"];
       String reply='Detected Medicines are :\n\n\n';

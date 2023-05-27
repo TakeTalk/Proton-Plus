@@ -29,7 +29,9 @@ Map UserDetails={
   'photoUrl':"",
   'rewardsPoints':0,
   'location_lat':"",
-  'location_long':""
+  'location_long':"",
+  'medicine': false,
+  'insurance': false
 
 };
 
