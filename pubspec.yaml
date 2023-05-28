@@ -59,6 +59,8 @@ dependencies:
   coupon_uikit: ^0.2.0
   dotted_decoration: ^2.0.0
   flutter_tts: ^3.6.3
+  webview_flutter: ^4.2.1
+  cached_network_image: ^3.2.3
 
 
 

@@ -15,7 +15,7 @@ class Course {
 
 final List<Course> courses = [
   Course(
-    title: "Order Medicines by Prescription ",
+    title: "Order Medicines by Prescription",
     description: "Upload your prescription and get your medicines at your home seamlessly. You can use your rewards coins to order medicines."
   ),
   Course(

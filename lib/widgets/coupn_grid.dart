@@ -34,12 +34,18 @@ class CoupnsGrid extends StatelessWidget {
                       color: Colors.white,
                       width: 100,
                       height: 50,
-                        child : Image.network(
-                          datas[index][2], // URL of the network image
+                        child : FadeInImage(
+                          image:NetworkImage(datas[index][2]),
+                          placeholder: AssetImage(datas[index][2]),
+                          imageErrorBuilder:(context, error, stackTrace) {
+                            return Image.asset(datas[index][2],
+                                fit: BoxFit.fill
+                            );
+                          },
                           width: 200, // Specify width (optional)
-                          height: 200, // Specify height (optional)
-                          fit: BoxFit.fill, // How the image should be inscribed into the space (optional)
-                        )
+                          height: 200,
+                          fit: BoxFit.fill,
+                        ),
                     ),
                     const SizedBox(
                       height: 30,
