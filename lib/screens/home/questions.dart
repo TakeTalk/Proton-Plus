@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../reedem_coins.dart';
 import 'package:http/http.dart' as http;
@@ -15,15 +16,52 @@ class question extends StatefulWidget {
   State<question> createState() => _questionState();
 }
 
-class _questionState extends State<question> {
+
+class _questionState extends State<question> with WidgetsBindingObserver {
   bool? heart = false,brainNuro = false,brain = false,laungs = false,liver = false,bones = false;
 
+  final AppLifecycleObserver lifecycleObserver = AppLifecycleObserver();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    WidgetsBinding.instance!.addObserver(lifecycleObserver);
   }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance!.removeObserver(lifecycleObserver);
+    super.dispose();
+  }
+
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   if (state == AppLifecycleState.resumed) {
+  //     // Handle the resume event here
+  //     print('App resumed');
+  //     Fluttertoast.showToast(
+  //         msg: "resumed",
+  //         toastLength: Toast.LENGTH_LONG,
+  //         gravity: ToastGravity.CENTER,
+  //         timeInSecForIosWeb: 1,
+  //         backgroundColor: Colors.red,
+  //         textColor: Colors.red,
+  //         fontSize: 16.0
+  //     );
+  //   }
+  // }
+
+  void _navigateAndRefresh(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ReedemPage(),
+      ),
+    );
+    if(result == null){
+      vouchure.change();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -158,12 +196,7 @@ class _questionState extends State<question> {
                 //   content: Text(response.body),
                 // ));
       ReedemCoins.vouchers = jsonDecode(response.body);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const ReedemPage(),
-        ),
-      );
+      _navigateAndRefresh(context);
 
 
     } else {
@@ -177,4 +210,46 @@ class _questionState extends State<question> {
   }
 
 
+}
+
+class AppLifecycleObserver with WidgetsBindingObserver {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // Handle the resume event here
+      print('App resumed');
+      vouchure.change();
+    }
+  }
+}
+
+class vouchure{
+  static change(){
+    ReedemCoins.vouchers = [
+      ['Get 1 free Health checkup on Apollo Hospital', 600, 'assets/images/myntra.jpg'],
+      [
+        'Buy Medicines using Coins (1 coins = 1 INR)',
+        1,
+        'assets/images/almond.jpg'
+      ],
+      ['₹200 Off On Booking Narayana Hospital Appointment', 200, 'assets/images/tv.jpg'],
+      [
+        '₹4999 off on buying Health Insurance ',
+        2000,
+        'assets/images/healthinsuarance.jpg'
+      ],
+      [' Get Free Proton Membership worth ₹3999', 2000, 'assets/images/membership.jpg'],
+      [
+        '10% OFF on Booking Appointment @Apollo',
+        250,
+        'assets/images/myntra.jpg'
+      ],
+      ['Flat 10% OFF in Medical Equipment', 400, 'assets/images/eq.jpg'],
+      [
+        'Full Body Checkup  worth ₹7999',
+        000,
+        'assets/images/check.jpg'
+      ],
+    ];
+  }
 }

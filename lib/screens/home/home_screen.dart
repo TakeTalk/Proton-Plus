@@ -12,6 +12,7 @@ import 'package:rive_animation/screens/home/questions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../model/course.dart';
 import '../../utils.dart';
+import '../../webView.dart';
 import '../entryPoint/chat/ChatScreen.dart';
 import '../entryPoint/chat/chat.dart';
 import 'components/course_card.dart';
@@ -95,7 +96,14 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   );
                                 }
-                            else{
+                            else if (course.title.toString() == "Order Medicines by Prescription"){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const webView(),
+                                ),
+                              );
+                            }else{
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
